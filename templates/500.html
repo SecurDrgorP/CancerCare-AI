@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error - Cancer Treatment Assistant{% endblock %}
+
+{% block content %}
+<div class="container text-center py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="error-page">
+                <h1 class="display-1 text-medical">500</h1>
+                <h2 class="mb-4">Internal Server Error</h2>
+                <p class="lead mb-4">
+                    Something went wrong on our end. Please try again in a moment.
+                    If the problem persists, please contact support.
+                </p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <a href="{{ url_for('index') }}" class="btn btn-medical">
+                        <i class="fas fa-home"></i> Back to Home
+                    </a>
+                    <button class="btn btn-outline-secondary" onclick="window.location.reload()">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

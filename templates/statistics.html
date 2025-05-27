@@ -1,0 +1,445 @@
+{% extends "base.html" %}
+
+{% block title %}Statistics & Analytics - Cancer Treatment Assistant{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Page Header -->
+        <div class="col-12">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-chart-bar"></i>
+                    Statistics & Analytics
+                </h1>
+                <p class="page-subtitle">
+                    Comprehensive data insights and medical information analytics
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Statistics Overview -->
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="info-panel">
+                <div class="info-header">
+                    <h5><i class="fas fa-heartbeat"></i> Medical Information Overview</h5>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-disease"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>{{ cancer_count }}</h3>
+                            <span>Cancer Types</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>{{ treatment_count }}</h3>
+                            <span>Treatment Options</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>{{ side_effect_count }}</h3>
+                            <span>Side Effects</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>{{ query_count }}</h3>
+                            <span>Queries Processed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Treatment Distribution Chart -->
+        <div class="col-lg-6 col-xl-8 mb-4">
+            <div class="info-panel">
+                <div class="info-header">
+                    <h5><i class="fas fa-chart-pie"></i> Treatment Distribution</h5>
+                </div>
+                <div class="chart-container">
+                    <canvas id="treatmentChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Side Effects Analysis -->
+        <div class="col-lg-6 mb-4">
+            <div class="info-panel">
+                <div class="info-header">
+                    <h5><i class="fas fa-exclamation-triangle"></i> Top Side Effects</h5>
+                </div>
+                <div class="chart-container">
+                    <canvas id="sideEffectsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cancer Types Distribution -->
+        <div class="col-lg-6 mb-4">
+            <div class="info-panel">
+                <div class="info-header">
+                    <h5><i class="fas fa-disease"></i> Cancer Types Distribution</h5>
+                </div>
+                <div class="chart-container">
+                    <canvas id="cancerTypesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Data Tables -->
+        <div class="col-12">
+            <div class="info-panel">
+                <div class="info-header">
+                    <h5><i class="fas fa-table"></i> Detailed Information</h5>
+                </div>
+                
+                <!-- Tab Navigation -->
+                <ul class="nav nav-tabs" id="dataTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="cancer-tab" data-bs-toggle="tab" data-bs-target="#cancer-types" type="button" role="tab">
+                            <i class="fas fa-disease me-2"></i>Cancer Types
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="treatments-tab" data-bs-toggle="tab" data-bs-target="#treatments" type="button" role="tab">
+                            <i class="fas fa-pills me-2"></i>Treatments
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="side-effects-tab" data-bs-toggle="tab" data-bs-target="#side-effects" type="button" role="tab">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Side Effects
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content" id="dataTabContent">
+                    <!-- Cancer Types Tab -->
+                    <div class="tab-pane fade show active" id="cancer-types" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="cancerTypesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Cancer Type</th>
+                                        <th>Stage</th>
+                                        <th>Symptoms</th>
+                                        <th>Treatments Available</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be loaded via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Treatments Tab -->
+                    <div class="tab-pane fade" id="treatments" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="treatmentsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Treatment</th>
+                                        <th>Category</th>
+                                        <th>Effectiveness</th>
+                                        <th>Side Effects</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be loaded via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Side Effects Tab -->
+                    <div class="tab-pane fade" id="side-effects" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="sideEffectsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Side Effect</th>
+                                        <th>Frequency</th>
+                                        <th>Severity</th>
+                                        <th>Management</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be loaded via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Example Queries Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="info-panel">
+                <div class="info-header">
+                    <h5><i class="fas fa-lightbulb"></i> Popular Questions</h5>
+                </div>
+                <div class="example-grid">
+                    {% for query in example_queries %}
+                    <div class="example-item" data-query="{{ query }}">
+                        <i class="fas fa-comment-medical"></i>
+                        <span>{{ query }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Load all charts and data on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        loadTreatmentChart();
+        loadSideEffectsChart();
+        loadCancerTypesChart();
+        loadDataTables();
+    });
+
+    // Load treatment distribution chart
+    function loadTreatmentChart() {
+        fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('treatmentChart').getContext('2d');
+                const treatmentData = data.treatment_categories;
+                
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(treatmentData),
+                        datasets: [{
+                            data: Object.values(treatmentData),
+                            backgroundColor: [
+                                'rgba(14, 165, 233, 0.8)',
+                                'rgba(6, 182, 212, 0.8)',
+                                'rgba(34, 197, 94, 0.8)',
+                                'rgba(168, 85, 247, 0.8)',
+                                'rgba(249, 115, 22, 0.8)',
+                                'rgba(239, 68, 68, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(14, 165, 233, 1)',
+                                'rgba(6, 182, 212, 1)',
+                                'rgba(34, 197, 94, 1)',
+                                'rgba(168, 85, 247, 1)',
+                                'rgba(249, 115, 22, 1)',
+                                'rgba(239, 68, 68, 1)'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Error loading treatment chart:', error));
+    }
+
+    // Load side effects chart
+    function loadSideEffectsChart() {
+        fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('sideEffectsChart').getContext('2d');
+                const sideEffectsData = data.top_side_effects;
+                
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(sideEffectsData),
+                        datasets: [{
+                            label: 'Frequency',
+                            data: Object.values(sideEffectsData),
+                            backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                            borderColor: 'rgba(239, 68, 68, 1)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Error loading side effects chart:', error));
+    }
+
+    // Load cancer types chart
+    function loadCancerTypesChart() {
+        fetch('/api/data/cancer_types')
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('cancerTypesChart').getContext('2d');
+                const cancerTypes = data.data;
+                
+                // Group by cancer type
+                const typeCounts = {};
+                cancerTypes.forEach(cancer => {
+                    const type = cancer.cancer_type || 'Unknown';
+                    typeCounts[type] = (typeCounts[type] || 0) + 1;
+                });
+                
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: Object.keys(typeCounts),
+                        datasets: [{
+                            data: Object.values(typeCounts),
+                            backgroundColor: [
+                                'rgba(14, 165, 233, 0.8)',
+                                'rgba(6, 182, 212, 0.8)',
+                                'rgba(34, 197, 94, 0.8)',
+                                'rgba(168, 85, 247, 0.8)',
+                                'rgba(249, 115, 22, 0.8)',
+                                'rgba(239, 68, 68, 0.8)',
+                                'rgba(245, 158, 11, 0.8)',
+                                'rgba(139, 92, 246, 0.8)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Error loading cancer types chart:', error));
+    }
+
+    // Load data tables
+    function loadDataTables() {
+        // Load cancer types table
+        fetch('/api/data/cancer_types')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('#cancerTypesTable tbody');
+                tbody.innerHTML = '';
+                
+                data.data.forEach(cancer => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${cancer.cancer_type || 'Unknown'}</strong></td>
+                        <td><span class="badge bg-info">${cancer.stage || 'N/A'}</span></td>
+                        <td>${cancer.symptoms || 'Not specified'}</td>
+                        <td>${cancer.treatments || 'Consult oncologist'}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            });
+
+        // Load treatments table
+        fetch('/api/data/treatments')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('#treatmentsTable tbody');
+                tbody.innerHTML = '';
+                
+                data.data.forEach(treatment => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${treatment.treatment || 'Unknown'}</strong></td>
+                        <td><span class="badge bg-primary">${treatment.category || 'N/A'}</span></td>
+                        <td>${treatment.effectiveness || 'Varies'}</td>
+                        <td>${treatment.side_effects || 'Consult doctor'}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            });
+
+        // Load side effects table
+        fetch('/api/data/side_effects')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('#sideEffectsTable tbody');
+                tbody.innerHTML = '';
+                
+                data.data.forEach(sideEffect => {
+                    const row = document.createElement('tr');
+                    const severityClass = getSeverityClass(sideEffect.severity);
+                    row.innerHTML = `
+                        <td><strong>${sideEffect.side_effect || 'Unknown'}</strong></td>
+                        <td>${sideEffect.frequency || 'Unknown'}</td>
+                        <td><span class="badge ${severityClass}">${sideEffect.severity || 'N/A'}</span></td>
+                        <td>${sideEffect.management || 'Consult healthcare provider'}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            });
+    }
+
+    // Helper function to get severity badge class
+    function getSeverityClass(severity) {
+        if (!severity) return 'bg-secondary';
+        
+        const severityLower = severity.toLowerCase();
+        if (severityLower.includes('mild') || severityLower.includes('low')) {
+            return 'bg-success';
+        } else if (severityLower.includes('moderate') || severityLower.includes('medium')) {
+            return 'bg-warning';
+        } else if (severityLower.includes('severe') || severityLower.includes('high')) {
+            return 'bg-danger';
+        }
+        return 'bg-secondary';
+    }
+
+    // Add click functionality to example queries
+    document.querySelectorAll('.example-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const query = this.dataset.query;
+            // Redirect to main chat page with the query
+            window.location.href = `/?q=${encodeURIComponent(query)}`;
+        });
+    });
+</script>
+{% endblock %}

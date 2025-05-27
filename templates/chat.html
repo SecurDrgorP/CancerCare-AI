@@ -1,0 +1,538 @@
+{% extends "base.html" %}
+
+{% block title %}Chat - Cancer Treatment Assistant{% endblock %}
+
+{% block head %}
+<style>
+    /* Full-page chat layout */
+    body {
+        height: 100vh;
+        overflow: hidden;
+    }
+    
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-light);
+    }
+    
+    .chat-fullpage {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        background: var(--body-bg);
+    }
+    
+    .chat-container-fullpage {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        max-width: 900px;
+        margin: 0 auto;
+        width: 100%;
+        padding: 1rem;
+        height: 100%;
+    }
+    
+    .chat-header-fullpage {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 12px 12px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: var(--shadow-lg);
+        flex-shrink: 0;
+    }    .chat-messages-fullpage {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border-left: 1px solid var(--border-light);
+        border-right: 1px solid var(--border-light);
+        display: flex;
+        flex-direction: column;
+        color: #000000;
+    }
+    
+    .chat-input-fullpage {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 0 0 12px 12px;
+        border: 1px solid var(--border-light);
+        border-top: none;
+        flex-shrink: 0;
+    }
+    
+    .message-fullpage {
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: flex-start;
+        animation: slideInUp 0.3s ease-out;
+    }
+    
+    .message-fullpage.user-message {
+        flex-direction: row-reverse;
+    }
+    
+    .message-avatar-fullpage {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 1rem;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+    
+    .message-fullpage.bot-message .message-avatar-fullpage {
+        background: var(--primary-gradient);
+        color: white;
+    }
+    
+    .message-fullpage.user-message .message-avatar-fullpage {
+        background: var(--success-gradient);
+        color: white;
+    }
+    
+    .message-bubble-fullpage {
+        max-width: 75%;
+        padding: 1.25rem 1.5rem;
+        border-radius: 18px;
+        position: relative;
+        box-shadow: var(--shadow-sm);
+    }    .message-fullpage.bot-message .message-bubble-fullpage {
+        background: white;
+        color: #000000;
+        border: 1px solid var(--border-light);
+        border-bottom-left-radius: 6px;
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .message-fullpage.user-message .message-bubble-fullpage {
+        background: var(--primary-gradient);
+        color: white;
+        border-bottom-right-radius: 6px;
+    }
+    
+    .input-group-fullpage {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }    .chat-input-field {
+        flex: 1;
+        border: 2px solid var(--border-light);
+        border-radius: 25px;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+        background: white;
+        color: #000000;
+    }
+    
+    .chat-input-field::placeholder {
+        color: #666666;
+    }    .chat-input-field:focus {
+        border-color: var(--medical-primary);
+        background: white;
+        color: #000000;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+    }
+    
+    .send-button {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--primary-gradient);
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .send-button:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .send-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .quick-actions-fullpage {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+    }
+      .quick-action-btn {
+        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        border: 1px solid var(--border-light);
+        border-radius: 20px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        color: #000000;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+    
+    .quick-action-btn:hover {
+        background: var(--primary-gradient);
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .typing-indicator-fullpage {
+        display: none;
+        margin-bottom: 1rem;
+    }    .typing-dots-fullpage {
+        display: flex;
+        gap: 0.25rem;
+        padding: 1rem 1.5rem;
+        background: white;
+        color: #000000;
+        border: 1px solid var(--border-light);
+        border-radius: 18px;
+        border-bottom-left-radius: 6px;
+        margin-left: 4rem;
+        width: fit-content;
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .typing-dots-fullpage span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--medical-primary);
+        animation: typing 1.4s infinite ease-in-out;
+    }
+    
+    .typing-dots-fullpage span:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+    
+    .typing-dots-fullpage span:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+    
+    @keyframes typing {
+        0%, 60%, 100% {
+            transform: translateY(0);
+            opacity: 0.5;
+        }
+        30% {
+            transform: translateY(-10px);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Scrollbar styling */
+    .chat-messages-fullpage::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .chat-messages-fullpage::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+    
+    .chat-messages-fullpage::-webkit-scrollbar-thumb {
+        background: var(--medical-primary);
+        border-radius: 3px;
+    }
+    
+    .chat-messages-fullpage::-webkit-scrollbar-thumb:hover {
+        background: var(--medical-secondary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="chat-fullpage">
+    <div class="chat-container-fullpage">
+        <!-- Chat Header -->
+        <div class="chat-header-fullpage">
+            <div class="d-flex align-items-center">
+                <div class="me-3">
+                    <i class="fas fa-robot fa-2x"></i>
+                </div>
+                <div>
+                    <h4 class="mb-0">Dr. AI Assistant</h4>
+                    <small class="opacity-75">Advanced Cancer Treatment Specialist</small>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="status-indicator me-2"></span>
+                <span>Online</span>
+            </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div class="chat-messages-fullpage" id="chatMessages">
+            <div class="message-fullpage bot-message">
+                <div class="message-avatar-fullpage">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="message-content">
+                    <div class="message-bubble-fullpage">
+                        <p><strong>Welcome to your AI Cancer Treatment Assistant!</strong> 🏥</p>
+                        <p>I'm here to provide you with comprehensive information about:</p>
+                        <ul class="mb-0">
+                            <li>Cancer types and stages</li>
+                            <li>Treatment options and protocols</li>
+                            <li>Side effects management</li>
+                            <li>General medical guidance</li>
+                        </ul>
+                        <p class="mt-3 mb-0"><strong>How can I help you today?</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typing Indicator -->
+        <div class="typing-indicator-fullpage" id="typingIndicator">
+            <div class="typing-dots-fullpage">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input-fullpage">
+            <form id="queryForm">
+                <div class="input-group-fullpage">
+                    <input type="text" class="chat-input-field" id="queryInput" 
+                           placeholder="Ask me anything about cancer treatments..."
+                           autocomplete="off" required>
+                    <button type="submit" class="send-button" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions-fullpage">
+                <button type="button" class="quick-action-btn" onclick="sendQuickMessage('What are the main types of cancer?')">
+                    <i class="fas fa-question-circle me-1"></i>Cancer Types
+                </button>
+                <button type="button" class="quick-action-btn" onclick="sendQuickMessage('What are common side effects of chemotherapy?')">
+                    <i class="fas fa-pills me-1"></i>Side Effects
+                </button>
+                <button type="button" class="quick-action-btn" onclick="sendQuickMessage('How does immunotherapy work?')">
+                    <i class="fas fa-shield-virus me-1"></i>Treatments
+                </button>
+                <button type="button" class="quick-action-btn" onclick="sendQuickMessage('What should I know about stage 2 breast cancer?')">
+                    <i class="fas fa-chart-line me-1"></i>Stages
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Medical Entity Modal -->
+<div class="modal fade" id="entityModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-tags"></i> Detected Medical Terms
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="entityModalBody">
+                <!-- Entity content will be populated here -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Initialize chatbot for full-page layout
+    class FullPageChatbot {
+        constructor() {
+            this.chatMessages = document.getElementById('chatMessages');
+            this.initializeEventListeners();
+            this.messageCounter = 0;
+            this.isTyping = false;
+        }
+
+        initializeEventListeners() {
+            const queryForm = document.getElementById('queryForm');
+            if (queryForm) {
+                queryForm.addEventListener('submit', (e) => this.handleQuerySubmit(e));
+            }
+
+            const queryInput = document.getElementById('queryInput');
+            if (queryInput) {
+                queryInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.handleQuerySubmit(e);
+                    }
+                });
+            }
+
+            this.scrollToBottom();
+        }
+
+        async handleQuerySubmit(e) {
+            e.preventDefault();
+            if (this.isTyping) return;
+
+            const queryInput = document.getElementById('queryInput');
+            const submitBtn = document.getElementById('submitBtn');
+            const query = queryInput.value.trim();
+
+            if (!query) return;
+
+            // Add user message
+            this.addMessage(query, 'user');
+            queryInput.value = '';
+            submitBtn.disabled = true;
+
+            // Show typing indicator
+            this.showTyping();
+
+            try {
+                const response = await fetch('/api/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: query })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    this.addMessage(data.response, 'bot', data.entities);
+                } else {
+                    this.addMessage('Sorry, I encountered an error processing your request.', 'bot');
+                }
+            } catch (error) {
+                this.addMessage('Sorry, I\'m having trouble connecting. Please try again.', 'bot');
+            } finally {
+                this.hideTyping();
+                submitBtn.disabled = false;
+                queryInput.focus();
+            }
+        }
+
+        addMessage(content, sender, entities = []) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message-fullpage ${sender}-message`;
+            
+            const avatar = sender === 'bot' ? 'fas fa-user-md' : 'fas fa-user';
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar-fullpage">
+                    <i class="${avatar}"></i>
+                </div>
+                <div class="message-content">
+                    <div class="message-bubble-fullpage">
+                        ${this.formatMessage(content, entities)}
+                    </div>
+                </div>
+            `;
+
+            this.chatMessages.appendChild(messageDiv);
+            this.scrollToBottom();
+        }
+
+        formatMessage(content, entities = []) {
+            let formattedContent = content;
+            
+            // Format entities with badges
+            entities.forEach(entity => {
+                const regex = new RegExp(`\\b${entity.text}\\b`, 'gi');
+                const badge = `<span class="entity-badge entity-${entity.type}">${entity.text}</span>`;
+                formattedContent = formattedContent.replace(regex, badge);
+            });
+
+            return formattedContent.replace(/\n/g, '<br>');
+        }
+
+        showTyping() {
+            this.isTyping = true;
+            document.getElementById('typingIndicator').style.display = 'block';
+            this.scrollToBottom();
+        }
+
+        hideTyping() {
+            this.isTyping = false;
+            document.getElementById('typingIndicator').style.display = 'none';
+        }
+
+        scrollToBottom() {
+            if (this.chatMessages) {
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+        }
+    }
+
+    // Global function for quick messages
+    function sendQuickMessage(message) {
+        const queryInput = document.getElementById('queryInput');
+        if (queryInput) {
+            queryInput.value = message;
+            queryInput.focus();
+        }
+    }    // Initialize full-page chatbot
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatbot = new FullPageChatbot();
+        
+        // Check for query parameter and auto-fill if present
+        const urlParams = new URLSearchParams(window.location.search);
+        const prefilledQuery = urlParams.get('q');
+        
+        if (prefilledQuery) {
+            const queryInput = document.getElementById('queryInput');
+            if (queryInput) {
+                queryInput.value = prefilledQuery;
+                queryInput.focus();
+                // Optionally auto-submit the query
+                setTimeout(() => {
+                    if (confirm('Would you like to send this question automatically?')) {
+                        chatbot.handleQuerySubmit(new Event('submit'));
+                    }
+                }, 1000);
+            }
+        }
+    });
+</script>
+{% endblock %}
