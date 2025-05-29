@@ -3,6 +3,12 @@ import json
 from nlp_processor import NLPProcessor
 from data_handler import DataHandler
 from response_generator import ResponseGenerator
+from nlp_pipeline import pipeline_pretraitement_requete
+from biobert_qa import BioBERTPlaceholder
+biobert_model = BioBERTPlaceholder()
+
+
+
 
 app = Flask(__name__)
 
@@ -51,11 +57,11 @@ def chat():
 #     side_effect_count = len(data_handler.get_side_effects())
 #     query_count = 1247  # This could be stored in a database in a real application
 
-
 @app.route('/statistics')
 def statistics():
     return render_template("statistics.html", cancer_count=52, treatment_count=210, side_effect_count=103)
-    
+
+ 
     # Get example queries for the statistics page
     example_queries = [
         "What are treatment options for breast cancer stage 2?",
@@ -79,31 +85,34 @@ def statistics():
 
 @app.route('/api/query', methods=['POST'])
 def process_query():
-    """Process user query and return response"""
     try:
         data = request.get_json()
         query = data.get('query', '').strip()
-        
+
         if not query:
-            return jsonify({'error': 'Please enter a question.'}), 400
-        
-        # Extract entities from query
-        entities = nlp_processor.extract_entities(query)
-        
-        # Generate response
-        response = response_generator.generate_response(query, entities)
-        
+            return jsonify({'error': 'Veuillez entrer une question.'}), 400
+
+        # NLP preprocessing
+        nlp_result = pipeline_pretraitement_requete(query)
+        entities = nlp_result['entites']
+        tokens = nlp_result['tokens']
+
+        # TODO: use real context later
+        dummy_context = "Cancer is treated using chemotherapy, radiation, surgery, and targeted therapies."
+        biobert_answer = biobert_model.answer_question(query, context=dummy_context)
+
         return jsonify({
             'success': True,
-            'response': response['text'],
+            'response': biobert_answer,
             'entities': entities,
-            'related_data': response.get('related_data', {}),
-            'intent': response.get('intent', 'general_info')
+            'tokens': tokens,
+            'intent': 'biobert_test'
         })
-        
-    except Exception as e:
-        return jsonify({'error': f'Error processing query: {str(e)}'}), 500
 
+    except Exception as e:
+        return jsonify({'error': f'Erreur lors du traitement : {str(e)}'}), 500
+
+    
 @app.route('/api/stats')
 def get_stats():
     """Get application statistics"""
