@@ -1,0 +1,88 @@
+{
+  "general": [
+    {
+      "question": "What are the most common types of cancer?",
+      "answer": "The most common types of cancer include breast cancer, lung cancer, prostate cancer, colorectal cancer, and skin cancer. These account for about 60% of all cancer diagnoses. The specific rates vary by gender, age, and geographic location."
+    },
+    {
+      "question": "How is cancer staged?",
+      "answer": "Cancer staging describes the size and extent of cancer. The TNM system is commonly used: T (tumor size and extent), N (lymph node involvement), M (metastasis to other parts). Stages range from 0 (in situ) to IV (advanced/metastatic). Staging helps determine treatment options and prognosis."
+    },
+    {
+      "question": "What causes cancer?",
+      "answer": "Cancer is caused by genetic changes that allow cells to grow uncontrollably. Risk factors include tobacco use, excessive alcohol consumption, UV radiation, certain infections, family history, age, and exposure to carcinogens. Many cancers result from a combination of factors over time."
+    },
+    {
+      "question": "Can cancer be prevented?",
+      "answer": "While not all cancers can be prevented, many can be through lifestyle changes: avoiding tobacco, limiting alcohol, maintaining a healthy weight, exercising regularly, eating a balanced diet, protecting skin from UV rays, getting vaccinated (HPV, Hepatitis B), and following screening guidelines."
+    }
+  ],
+  "treatment": [
+    {
+      "question": "What are the main types of cancer treatment?",
+      "answer": "Main cancer treatments include surgery (removing tumors), chemotherapy (drugs that kill cancer cells), radiation therapy (high-energy rays), immunotherapy (boosting immune system), targeted therapy (drugs targeting specific cancer features), and hormone therapy (blocking hormones that fuel certain cancers)."
+    },
+    {
+      "question": "How long does cancer treatment take?",
+      "answer": "Treatment duration varies widely depending on cancer type, stage, and treatment plan. Surgery may take hours with weeks of recovery. Chemotherapy typically runs 3-6 months. Radiation therapy usually lasts 5-7 weeks. Some treatments like hormone therapy may continue for years."
+    },
+    {
+      "question": "What is precision medicine in cancer treatment?",
+      "answer": "Precision medicine uses genetic testing of tumors to identify specific mutations and select targeted therapies. This approach allows for more personalized treatment plans, potentially improving effectiveness while reducing side effects compared to traditional one-size-fits-all approaches."
+    },
+    {
+      "question": "Should I get a second opinion?",
+      "answer": "Getting a second opinion is often recommended, especially for complex cases or rare cancers. It can provide confirmation of diagnosis, alternative treatment options, or access to clinical trials. Most doctors support patients seeking second opinions, and insurance often covers consultations."
+    }
+  ],
+  "side_effects": [
+    {
+      "question": "What are common side effects of chemotherapy?",
+      "answer": "Common chemotherapy side effects include nausea, vomiting, hair loss, fatigue, low blood counts, increased infection risk, mouth sores, and neuropathy (nerve damage). Side effects vary by specific drugs used and individual patient factors. Many can be managed with supportive medications."
+    },
+    {
+      "question": "How can I manage treatment side effects?",
+      "answer": "Side effect management includes: taking prescribed anti-nausea medications, staying hydrated, eating small frequent meals, getting adequate rest, gentle exercise as tolerated, maintaining good hygiene, and promptly reporting concerning symptoms to your healthcare team."
+    },
+    {
+      "question": "Are side effects permanent?",
+      "answer": "Most cancer treatment side effects are temporary and resolve after treatment ends. However, some effects like neuropathy, heart problems, or cognitive changes may persist long-term. Your healthcare team can discuss specific risks and strategies to minimize lasting effects."
+    },
+    {
+      "question": "What is chemotherapy brain fog?",
+      "answer": "Chemotherapy-related cognitive impairment, often called 'chemo brain,' involves memory problems, difficulty concentrating, and mental fatigue. It affects many patients during and after treatment. Symptoms usually improve over time, and cognitive rehabilitation strategies can help."
+    }
+  ],
+  "lifestyle": [
+    {
+      "question": "What should I eat during cancer treatment?",
+      "answer": "Focus on a balanced diet with adequate protein for healing, plenty of fluids, and foods that are easy to digest. Eat small, frequent meals if experiencing nausea. Include fruits and vegetables when tolerated. Avoid alcohol and discuss supplements with your team."
+    },
+    {
+      "question": "Can I exercise during cancer treatment?",
+      "answer": "Light to moderate exercise is generally beneficial during treatment, including walking, gentle yoga, or swimming as tolerated. Exercise can help with fatigue, mood, and overall well-being. Always discuss your exercise plans with your healthcare team first."
+    },
+    {
+      "question": "How do I cope emotionally with cancer?",
+      "answer": "Emotional support is crucial. Consider counseling, support groups, meditation, or spiritual care. Stay connected with family and friends. It's normal to experience anxiety, fear, anger, or sadness. Professional mental health support can be very helpful."
+    },
+    {
+      "question": "Should I work during treatment?",
+      "answer": "Whether to continue working depends on your treatment schedule, side effects, and job requirements. Many people work part-time or modified schedules. Discuss options with your employer and healthcare team. You may be entitled to medical leave protections."
+    }
+  ],
+  "support": [
+    {
+      "question": "What support services are available?",
+      "answer": "Support services include social workers, nutritionists, patient navigators, support groups, transportation assistance, financial counselors, chaplains, and mental health professionals. Most cancer centers offer comprehensive support programs."
+    },
+    {
+      "question": "How can family members help?",
+      "answer": "Family can help by attending appointments, providing transportation, helping with household tasks, offering emotional support, learning about the cancer and treatment, and taking care of their own well-being. Communication about needs and boundaries is important."
+    },
+    {
+      "question": "Are there financial assistance programs?",
+      "answer": "Yes, many programs exist including hospital financial assistance, pharmaceutical company patient programs, cancer organization grants, government programs, and nonprofit assistance. Hospital financial counselors can help identify available resources."
+    }
+  ]
+}
