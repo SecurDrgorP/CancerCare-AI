@@ -1,5 +1,10 @@
 .venv
 .venv/
+venv/
+
+data/*.json
+
+
 
 __pycache__
 *.pyc
@@ -14,3 +19,6 @@ __pycache__
 
 
 datasets
+
+transformers
+torch
