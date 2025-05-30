@@ -5,11 +5,11 @@ def run_inference(question, context):
 
     local_save_path = r"c:\Users\mot\Documents\Master\NLP\CancerCare-AI\data\datasets\biobert_v1.1_pubmed_squad_v2_local" # Path where the model is saved locally
     # Load tokenizer and model
-    tokenizer = AutoTokenizer.from_pretrained("ktrapeznikov/biobert_v1.1_pubmed_squad_v2")
-    model = AutoModelForQuestionAnswering.from_pretrained("ktrapeznikov/biobert_v1.1_pubmed_squad_v2")
+    # tokenizer = AutoTokenizer.from_pretrained("ktrapeznikov/biobert_v1.1_pubmed_squad_v2")
+    # model = AutoModelForQuestionAnswering.from_pretrained("ktrapeznikov/biobert_v1.1_pubmed_squad_v2")
 
-    # tokenizer = AutoTokenizer.from_pretrained(local_save_path)
-    # model = AutoModelForQuestionAnswering.from_pretrained(local_save_path)
+    tokenizer = AutoTokenizer.from_pretrained(local_save_path)
+    model = AutoModelForQuestionAnswering.from_pretrained(local_save_path)
 
     # Ensure model runs on CPU
     device = torch.device("cpu")
