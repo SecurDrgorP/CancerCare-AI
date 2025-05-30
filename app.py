@@ -6,6 +6,9 @@ from response_generator import ResponseGenerator
 from biobert_qa import BioBERT_QA
 from nlp_pipeline import pipeline_pretraitement_requete
 
+from context_provider import LocalContextRetriever
+context_provider = LocalContextRetriever("cancer_qa_dataset.json")
+
 biobert_model = BioBERT_QA()
 
 
@@ -92,28 +95,43 @@ def process_query():
         if not query:
             return jsonify({'error': 'Veuillez entrer une question.'}), 400
 
-        # NLP preprocessing
         nlp_result = pipeline_pretraitement_requete(query)
         entities = nlp_result['entites']
         tokens = nlp_result['tokens']
 
+        print(f"\n🔎 Query received: {query}")
 
-        # TODO: use real context later
-        # Find or generate context dynamically
-        context = """Stage 3 breast cancer is typically treated with surgery, chemotherapy, and radiation. 
-                        Treatment may vary based on hormone receptor status and HER2 expression."""
+        # Get best matching context answer from JSON
+        answer_blocks = context_provider.get_best_answer_chunks(query)
+        print("🔍 Top context block(s):")
+        for block in answer_blocks:
+            print(block[:200], "...")
 
-        biobert_answer = biobert_model.answer_question(query, context=context)
+        candidate_sentences = []
+        for block in answer_blocks:
+            candidate_sentences.extend(context_provider.split_into_sentences(block))
+
+        print(f"🧠 Extracted {len(candidate_sentences)} candidate sentences.")
+        final_answer = "No clear answer found."
+
+        for sentence in candidate_sentences:
+            print(f"\n🧩 Sentence: {sentence}")
+            answer = biobert_model.answer_question(query, context=sentence)
+            print(f"🤖 Answer: {answer}")
+            if answer and isinstance(answer, str) and len(answer.strip()) > 5 and "no clear answer" not in answer.lower():
+                final_answer = answer
+                break
 
         return jsonify({
             'success': True,
-            'response': biobert_answer,
+            'response': final_answer,
             'entities': entities,
             'tokens': tokens,
-            'intent': 'biobert_test'
+            'intent': 'biobert_json_match'
         })
 
     except Exception as e:
+        print(f"❌ Exception occurred: {str(e)}")
         return jsonify({'error': f'Erreur lors du traitement : {str(e)}'}), 500
 
     

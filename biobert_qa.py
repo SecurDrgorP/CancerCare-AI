@@ -1,6 +1,19 @@
 # biobert_qa.py
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering
 import torch
+import re
+
+def clean_context(text):
+    # Remove excessive whitespace and newlines
+    text = re.sub(r"\s+", " ", text)
+    # Remove bullet points and list markers (like " - " or "•")
+    text = re.sub(r" ?[-•] ?", ". ", text)
+    # Replace multiple dots or weird endings
+    text = re.sub(r"\.{2,}", ".", text)
+    # Strip long empty space and fix sentence boundaries
+    text = text.strip()
+    return text
+
 
 class BioBERT_QA:
     def __init__(self):
