@@ -6,7 +6,7 @@ model_name = "ktrapeznikov/biobert_v1.1_pubmed_squad_v2"
 
 # Determine OS and set path accordingly
 if platform.system() == "Windows":
-    local_save_path = r"c:\Users\mot\Documents\Master\NLP\CancerCare-AI\data\datasets\biobert_v1.1_pubmed_squad_v2_local"
+    local_save_path = r"C:\Users\HP\Downloads\biobert_v1.1_pubmed_squad_v2_local"
 else:  # Assuming Linux or other Unix-like systems
     # For Linux, a path in the user's home directory is common.
     # You can customize 'NLP_models/CancerCare-AI_data' to your preference.
