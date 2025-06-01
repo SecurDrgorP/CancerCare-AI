@@ -4,8 +4,3 @@ Lung Cancer,Stage III,"Persistent cough, chest pain, shortness of breath","Surge
 Prostate Cancer,Stage I,"Difficulty urinating, blood in urine, pelvic pain","Active surveillance, Surgery, Radiation therapy",95-100%,60-70 years
 Colorectal Cancer,Stage II,"Changes in bowel habits, blood in stool, abdominal pain","Surgery, Chemotherapy, Radiation therapy, Targeted therapy",70-80%,50-70 years
 Ovarian Cancer,Stage III,"Abdominal bloating, pelvic pain, difficulty eating","Surgery, Chemotherapy, Targeted therapy",40-50%,50-65 years
-Pancreatic Cancer,Stage III,"Abdominal pain, weight loss, jaundice","Surgery, Chemotherapy, Radiation therapy",5-10%,60-75 years
-Liver Cancer,Stage II,"Abdominal pain, swelling, weight loss","Surgery, Ablation, Transplant, Targeted therapy",30-40%,55-70 years
-Kidney Cancer,Stage I,"Blood in urine, flank pain, abdominal mass","Surgery, Immunotherapy, Targeted therapy",90-95%,55-70 years
-Bladder Cancer,Stage II,"Blood in urine, frequent urination, pelvic pain","Surgery, Chemotherapy, Immunotherapy, BCG therapy",70-80%,65-75 years
-Brain Cancer,Stage III,"Headaches, seizures, cognitive changes","Surgery, Radiation therapy, Chemotherapy",20-30%,45-65 years

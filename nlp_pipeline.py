@@ -68,8 +68,3 @@ def pipeline_pretraitement_requete(text):
         "entites": entites
     }
 
-# Pour tester directement
-if __name__ == "__main__":
-    texte = "Quels sont les effets secondaires de la chimiothérapie ?"
-    resultat = pipeline_pretraitement_requete(texte)
-    print(resultat)

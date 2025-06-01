@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, jsonify
-import json
 from data_handler import DataHandler
 from biobert_qa import BioBERT_QA
 from nlp_pipeline import pipeline_pretraitement_requete
