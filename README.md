@@ -26,7 +26,7 @@ A comprehensive web application built with **Flask** and **BioBERT** that provid
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/SecurDrgorP/CancerCare-AI.git
    cd CancerCare-AI
    ```
 
