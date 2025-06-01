@@ -2,6 +2,7 @@
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering
 import torch
 import re
+import os
 
 def clean_context(text):
     # Remove excessive whitespace and newlines
@@ -17,8 +18,9 @@ def clean_context(text):
 
 class BioBERT_QA:
     def __init__(self):
-        # Replace with your actual path (adjust if Linux)
-        self.model_path = r"C:\Users\HP\Downloads\biobert_v1.1_pubmed_squad_v2_local"
+        # Get the directory where this script is located and set path to model folder (universal for both OS)
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        self.model_path = os.path.join(script_dir, "model", "biobert_v1.1_pubmed_squad_v2_local")
         self.device = torch.device("cpu")  # or "cuda" if using GPU
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
         self.model = AutoModelForQuestionAnswering.from_pretrained(self.model_path)

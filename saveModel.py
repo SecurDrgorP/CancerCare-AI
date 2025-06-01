@@ -1,17 +1,13 @@
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering
 import os
-import platform
 
 model_name = "ktrapeznikov/biobert_v1.1_pubmed_squad_v2"
 
-# Determine OS and set path accordingly
-if platform.system() == "Windows":
-    local_save_path = r"C:\Users\HP\Downloads\biobert_v1.1_pubmed_squad_v2_local"
-else:  # Assuming Linux or other Unix-like systems
-    # For Linux, a path in the user's home directory is common.
-    # You can customize 'NLP_models/CancerCare-AI_data' to your preference.
-    home_dir = os.path.expanduser("~")
-    local_save_path = os.path.join(home_dir, "NLP_models", "CancerCare-AI_data", "biobert_v1.1_pubmed_squad_v2_local")
+# Get the directory where this script is located
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Set path to model folder relative to the script location (universal for both OS)
+local_save_path = os.path.join(script_dir, "model", "biobert_v1.1_pubmed_squad_v2_local")
 
 # Create directory if it doesn't exist
 if not os.path.exists(local_save_path):

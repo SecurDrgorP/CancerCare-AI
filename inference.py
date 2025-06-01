@@ -1,9 +1,12 @@
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering
 import torch
+import os
 
 def run_inference(question, context):
 
-    local_save_path = r"c:\Users\mot\Documents\Master\NLP\CancerCare-AI\data\datasets\biobert_v1.1_pubmed_squad_v2_local" # Path where the model is saved locally
+    # Get the directory where this script is located and set path to model folder (universal for both OS)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    local_save_path = os.path.join(script_dir, "model", "biobert_v1.1_pubmed_squad_v2_local")
     # Load tokenizer and model
     # tokenizer = AutoTokenizer.from_pretrained("ktrapeznikov/biobert_v1.1_pubmed_squad_v2")
     # model = AutoModelForQuestionAnswering.from_pretrained("ktrapeznikov/biobert_v1.1_pubmed_squad_v2")

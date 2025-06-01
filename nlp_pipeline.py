@@ -1,10 +1,30 @@
 import re
 import spacy
+import subprocess
+import sys
 from langdetect import detect
 
-# Charger les modèles spaCy complets
-nlp_fr = spacy.load("fr_core_news_sm")
-nlp_en = spacy.load("en_core_web_sm")
+def download_spacy_model(model_name):
+    """Download spaCy model if not available"""
+    try:
+        subprocess.check_call([sys.executable, "-m", "spacy", "download", model_name])
+        print(f"Successfully downloaded {model_name}")
+    except subprocess.CalledProcessError:
+        print(f"Failed to download {model_name}")
+        raise
+
+def load_spacy_model(model_name):
+    """Load spaCy model, download if not available"""
+    try:
+        return spacy.load(model_name)
+    except OSError:
+        print(f"spaCy model '{model_name}' not found. Downloading...")
+        download_spacy_model(model_name)
+        return spacy.load(model_name)
+
+# Charger les modèles spaCy complets avec téléchargement automatique
+nlp_fr = load_spacy_model("fr_core_news_sm")
+nlp_en = load_spacy_model("en_core_web_sm")
 
 def nettoyage_normalisation(text, lang):
     text = text.lower()

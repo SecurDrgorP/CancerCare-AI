@@ -1,24 +1,19 @@
 from flask import Flask, render_template, request, jsonify
 import json
-from nlp_processor import NLPProcessor
 from data_handler import DataHandler
-from response_generator import ResponseGenerator
 from biobert_qa import BioBERT_QA
 from nlp_pipeline import pipeline_pretraitement_requete
 
 from context_provider import LocalContextRetriever
-context_provider = LocalContextRetriever("cancer_qa_dataset.json")
-
-biobert_model = BioBERT_QA()
-
-
 
 app = Flask(__name__)
 
+# Initialize BioBERT model for question answering
+context_provider = LocalContextRetriever("data/cancer_qa_dataset.json")
+biobert_model = BioBERT_QA()
+
 # Initialize components
 data_handler = DataHandler()
-nlp_processor = NLPProcessor()
-response_generator = ResponseGenerator(data_handler)
 
 @app.route('/')
 def index():
@@ -63,28 +58,6 @@ def chat():
 @app.route('/statistics')
 def statistics():
     return render_template("statistics.html", cancer_count=52, treatment_count=210, side_effect_count=103)
-
- 
-    # Get example queries for the statistics page
-    example_queries = [
-        "What are treatment options for breast cancer stage 2?",
-        "Side effects of chemotherapy?",
-        "Diet recommendations during radiation?",
-        "Recovery time after surgery?",
-        "What is immunotherapy for lung cancer?",
-        "How does radiation therapy work?",
-        "Symptoms of ovarian cancer?",
-        "Cost of cancer treatments?",
-        "Nutrition during cancer treatment?",
-        "Mental health support for cancer patients?"
-    ]
-    
-    return render_template('statistics.html',
-                         cancer_count=cancer_count,
-                         treatment_count=treatment_count,
-                         side_effect_count=side_effect_count,
-                         query_count=query_count,
-                         example_queries=example_queries)
 
 @app.route('/api/query', methods=['POST'])
 def process_query():
