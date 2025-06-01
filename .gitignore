@@ -18,6 +18,8 @@ __pycache__
 *.pyd
 *.pyo
 
+.pytest_cache/
+
 
 datasets
 
