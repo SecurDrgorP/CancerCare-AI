@@ -66,8 +66,6 @@ CancerCare-AI/
 ├── requirements.txt         # Python dependencies
 ├── scripts/                 # Setup and utility scripts
 │   └── saveModel.py         # BioBERT model download and setup script
-├── utils/                   # Utility modules
-│   └── inference.py         # Model inference utilities
 ├── model/                   # BioBERT model storage
 │   └── biobert_v1.1_pubmed_squad_v2_local/  # Local BioBERT model
 ├── data/                    # Medical datasets
