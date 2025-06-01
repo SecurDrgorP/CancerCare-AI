@@ -35,16 +35,24 @@ A comprehensive web application built with **Flask** and **BioBERT** that provid
    pip install -r requirements.txt
    ```
 
-3. **spaCy models will be automatically downloaded** on first run (no manual installation needed)
+3. **Download and save the BioBERT model locally** (REQUIRED - run this first):
+   ```bash
+   python scripts/saveModel.py
+   ```
+   This will download the BioBERT model (~1.3GB) and save it locally in the `model/` directory.
 
-4. **Run the Flask application**:
+4. **spaCy models will be automatically downloaded** on first run (no manual installation needed)
+
+5. **Run the Flask application**:
    ```bash
    python app.py
+   ```
    or
+   ```bash
    flask run
    ```
 
-5. **Open your browser** and navigate to `http://localhost:5000`
+6. **Open your browser** and navigate to `http://localhost:5000`
 
 ## 📁 Project Structure
 
@@ -55,10 +63,11 @@ CancerCare-AI/
 ├── nlp_pipeline.py          # NLP processing with automatic spaCy downloading
 ├── context_provider.py      # Semantic context retrieval using sentence transformers
 ├── data_handler.py          # Data management and processing
-├── inference.py             # Model inference utilities
-├── saveModel.py             # Model saving and management
-├── XMLtoJSON.py             # Data conversion utilities
 ├── requirements.txt         # Python dependencies
+├── scripts/                 # Setup and utility scripts
+│   └── saveModel.py         # BioBERT model download and setup script
+├── utils/                   # Utility modules
+│   └── inference.py         # Model inference utilities
 ├── model/                   # BioBERT model storage
 │   └── biobert_v1.1_pubmed_squad_v2_local/  # Local BioBERT model
 ├── data/                    # Medical datasets
@@ -82,14 +91,102 @@ CancerCare-AI/
 
 ## 💡 Usage Examples
 
+### Web Interface
+
+1. **Landing Page** (`/`): Overview with example queries and statistics
+2. **Chat Interface** (`/chat`): Full-page chat with AI-powered responses
+3. **Statistics Dashboard** (`/statistics`): Analytics and treatment insights
+
+### API Endpoints
+
+- `POST /api/chat`: Send questions and receive AI-generated answers
+- `GET /api/statistics`: Retrieve treatment and cancer statistics
+
 ### Sample Queries
 
 - "What are treatment options for breast cancer stage 2?"
 - "Side effects of chemotherapy?"
 - "Diet recommendations during radiation?"
 - "Recovery time after surgery?"
-- "How does immunotherapy work for lung cancer?"
+- "What is immunotherapy for lung cancer?"
+- "How does radiation therapy work?"
+- "Symptoms of ovarian cancer?"
 - "Cost of cancer treatments?"
+
+### Key Components
+
+1. **Flask Application (`app.py`)**
+   - RESTful API with multiple routes
+   - Template rendering with Jinja2
+   - Integration with AI models and data handlers
+   - Error handling and logging
+
+2. **BioBERT QA System (`biobert_qa.py`)**
+   - Loads pre-trained BioBERT model from local storage
+   - Performs extractive question answering
+   - Optimized for biomedical text understanding
+   - GPU/CPU compatibility with automatic device detection
+
+3. **NLP Pipeline (`nlp_pipeline.py`)**
+   - Automatic spaCy model downloading (en_core_web_sm, fr_core_news_sm)
+   - Multilingual text processing (English/French)
+   - Language detection and normalization
+   - Medical entity extraction and text cleaning
+
+4. **Context Provider (`context_provider.py`)**
+   - Sentence transformer-based semantic search
+   - Finds most relevant context from knowledge base
+   - Uses all-MiniLM-L6-v2 model for embeddings
+   - Efficient similarity matching and ranking
+
+5. **Data Handler (`data_handler.py`)**
+   - Manages medical datasets and knowledge base
+   - Provides structured access to cancer information
+   - Statistics generation and data aggregation
+
+## 🧪 Testing
+
+The project includes a comprehensive test suite covering all major components.
+
+### Running Tests
+
+1. **Run all tests**:
+   ```bash
+   pytest
+   ```
+
+2. **Run tests with verbose output**:
+   ```bash
+   pytest -v
+   ```
+
+3. **Run specific test file**:
+   ```bash
+   pytest tests/test_biobert_qa.py
+   ```
+
+4. **Run tests with coverage report**:
+   ```bash
+   pytest --cov=. --cov-report=html
+   ```
+
+### Test Structure
+
+- **`test_biobert_qa.py`**: Tests BioBERT model initialization, question answering, and error handling
+- **`test_nlp_pipeline.py`**: Tests NLP processing, language detection, and spaCy model management
+- **`test_context_provider.py`**: Tests semantic search, embedding generation, and context retrieval
+- **`test_data_handler.py`**: Tests data loading, management, and statistics generation
+
+### Test Coverage
+
+The test suite covers:
+- ✅ Model loading and initialization
+- ✅ Question answering accuracy
+- ✅ NLP pipeline processing
+- ✅ Context retrieval functionality
+- ✅ Data handling and management
+- ✅ Error handling and edge cases
+- ✅ API endpoint responses
 
 ## 📊 Data Sources
 
@@ -102,11 +199,15 @@ The application uses curated medical datasets including:
 
 ## 🔧 Technical Stack
 
-- **Frontend**: Streamlit with custom CSS
-- **NLP**: spaCy for text processing (optional)
-- **Data**: Pandas for CSV/JSON handling
-- **Visualization**: Plotly for interactive charts
-- **Styling**: Custom medical-themed CSS
+- **Backend**: Flask web framework with Jinja2 templating
+- **AI/ML**: BioBERT (Transformers), Sentence Transformers, PyTorch
+- **NLP**: spaCy (with automatic model downloading), NLTK, langdetect
+- **Frontend**: HTML5, Bootstrap 5, Chart.js, Custom CSS/JavaScript
+- **Data Processing**: Pandas, NumPy for data manipulation
+- **Visualization**: Chart.js for interactive web charts, Matplotlib/Seaborn for analytics
+- **Testing**: pytest with comprehensive test coverage
+- **Dependencies**: See `requirements.txt` for complete list
+- **Model Storage**: Local BioBERT model (~1.3GB) for offline operation
 
 ## ⚠️ Medical Disclaimer
 
@@ -114,12 +215,67 @@ The application uses curated medical datasets including:
 
 ## 🎯 Success Criteria
 
-- ✅ Answers 80%+ of common cancer treatment questions
-- ✅ Clean, professional medical interface
-- ✅ Proper medical disclaimers throughout
-- ✅ Response time under 5 seconds
-- ✅ Works with 5+ cancer types and common treatments
-- ✅ Interactive visualizations and data display
+- ✅ AI-powered question answering using BioBERT for biomedical accuracy
+- ✅ Modern, responsive web interface with professional medical design
+- ✅ Comprehensive test suite with good coverage
+- ✅ Automatic dependency management (spaCy models)
+- ✅ Cross-platform compatibility (Windows, macOS, Linux)
+- ✅ Proper medical disclaimers throughout the application
+- ✅ Fast response times with local model inference
+- ✅ Semantic context retrieval for relevant information
+
+## 🚀 Future Enhancements
+
+- **Enhanced AI Models**: Integration with newer biomedical language models
+- **Real-time Data**: Connection to medical databases and research APIs
+- **Personalized Responses**: User profile-based recommendations
+- **Multi-language Support**: Expansion beyond English and French
+- **Mobile App**: React Native or Flutter mobile application
+- **Voice Interface**: Speech-to-text and text-to-speech capabilities
+- **Clinical Integration**: EHR integration and clinical decision support
+- **Advanced Analytics**: Machine learning for treatment outcome predictions
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+1. **Model Download Issues**:
+   ```bash
+   # If saveModel.py fails, try manually:
+   python scripts/saveModel.py
+   ```
+
+2. **spaCy Model Problems**:
+   ```bash
+   # Manual installation if auto-download fails:
+   python -m spacy download en_core_web_sm
+   python -m spacy download fr_core_news_sm
+   ```
+
+3. **Memory Issues**:
+   - Ensure at least 4GB RAM available
+   - Close other applications when running BioBERT
+   - Consider using smaller batch sizes
+
+4. **Port Already in Use**:
+   ```bash
+   # Use a different port:
+   export FLASK_RUN_PORT=5001
+   flask run
+   ```
+
+5. **Import Errors**:
+   ```bash
+   # Reinstall dependencies:
+   pip install -r requirements.txt --force-reinstall
+   ```
+
+### Testing Issues
+
+If tests fail, check:
+- All dependencies are installed: `pip install -r requirements.txt`
+- BioBERT model is downloaded: `python scripts/saveModel.py`
+- Python version compatibility (3.8+)
 
 ## 📝 Contributing
 

@@ -4,8 +4,8 @@ import os
 
 def run_inference(question, context):
 
-    # Get the directory where this script is located and set path to model folder (universal for both OS)
-    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # Get the directory where this script is located and go up one level to project root
+    script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     local_save_path = os.path.join(script_dir, "model", "biobert_v1.1_pubmed_squad_v2_local")
     # Load tokenizer and model
     # tokenizer = AutoTokenizer.from_pretrained("ktrapeznikov/biobert_v1.1_pubmed_squad_v2")

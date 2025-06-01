@@ -3,10 +3,10 @@ import os
 
 model_name = "ktrapeznikov/biobert_v1.1_pubmed_squad_v2"
 
-# Get the directory where this script is located
-script_dir = os.path.dirname(os.path.abspath(__file__))
+# Get the directory where this script is located and go up one level to project root
+script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Set path to model folder relative to the script location (universal for both OS)
+# Set path to model folder relative to the project root (universal for both OS)
 local_save_path = os.path.join(script_dir, "model", "biobert_v1.1_pubmed_squad_v2_local")
 
 # Create directory if it doesn't exist
